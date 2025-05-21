@@ -1,0 +1,21 @@
+.title1 {
+    color: #4C5E22;
+    font-family: Coquette;
+    font-size: 3em;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 0.734px;
+    margin-top: 1em;
+    padding-top: 0;
+}
+
+.title2 {
+    color:  #B50062;
+    font-family: CarlMarx;
+    font-size: 0.80em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1.086px;
+}
