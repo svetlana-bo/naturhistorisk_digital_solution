@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { usePoseTracker } from '../hooks/usePoseTracker';
 import leftWing from '../assets/bird/bird-left-wing.png';
 import rightWing from '../assets/bird/bird-right-wing.png';
@@ -6,6 +6,20 @@ import body from '../assets/bird/bird-body.png';
 
 export default function BirdAvatar() {
   const { videoRef, canvasRef, poseData } = usePoseTracker();
+  const wingState = useRef({ left: 'idle', right: 'idle' });
+  const lastAngle = useRef({ left: 0, right: 0 });
+
+  const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
+  const smoothAngle = (side, newAngle) => {
+    const smoothed = 0.8 * lastAngle.current[side] + 0.2 * newAngle;
+    lastAngle.current[side] = smoothed;
+    return smoothed;
+  };
+
+  const getAngle = (a, b) => {
+    if (!a || !b || isNaN(a.x) || isNaN(a.y) || isNaN(b.x) || isNaN(b.y)) return 0;
+    return Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
+  };
 
   useEffect(() => {
     if (!poseData || !canvasRef.current) return;
@@ -29,31 +43,68 @@ export default function BirdAvatar() {
     const rightWingEl = document.getElementById('rightWing');
     const bodyImg = document.getElementById('birdBody');
 
-    const getAngle = (a, b) => {
-      if (!a || !b || isNaN(a.x) || isNaN(a.y) || isNaN(b.x) || isNaN(b.y)) return 0;
-      return Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
+    const updateWingState = (side, wrist, shoulder) => {
+      const state = wingState.current[side];
+
+      if (!wrist || !shoulder || wrist.score < 0.3) {
+        wingState.current[side] = 'idle';
+        return;
+      }
+
+      const isAbove = wrist.y < shoulder.y;
+
+      switch (state) {
+        case 'idle':
+          wingState.current[side] = isAbove ? 'raising' : 'idle';
+          break;
+        case 'raising':
+          wingState.current[side] = isAbove ? 'raised' : 'lowering';
+          break;
+        case 'raised':
+          wingState.current[side] = isAbove ? 'raised' : 'lowering';
+          break;
+        case 'lowering':
+          wingState.current[side] = isAbove ? 'raising' : 'idle';
+          break;
+      }
+    };
+
+    updateWingState('left', leftWrist, leftShoulder);
+    updateWingState('right', rightWrist, rightShoulder);
+
+    const getWingOffset = (side) => {
+      switch (wingState.current[side]) {
+        case 'raising':
+        case 'raised':
+          return -40;
+        case 'lowering':
+          return -10;
+        default:
+          return 0;
+      }
     };
 
     if (leftWingEl && leftShoulder) {
       leftWingEl.style.left = `${mirrorX(leftShoulder.x - 110)}px`;
-      leftWingEl.style.top = `${leftShoulder.y + verticalOffset + 50}px`;
-      const visible = leftWrist && leftWrist.score > 0.3;
-      const angle = visible ? getAngle(leftShoulder, leftWrist) : 0;
-      leftWingEl.style.transform = `translate(-10%, -20%) rotate(${angle}deg)`;
+      leftWingEl.style.top = `${leftShoulder.y + verticalOffset + 50 + getWingOffset('left')}px`;
+
+      if (leftWrist?.score > 0.5) {
+        const rawAngle = getAngle(leftShoulder, leftWrist);
+        const angle = clamp(rawAngle, -90, 90);
+        const smoothed = smoothAngle('left', -angle); // ← FLIP left wing
+        leftWingEl.style.transform = `translate(-10%, -20%) rotate(${smoothed}deg)`;
+      }
     }
 
     if (rightWingEl && rightShoulder) {
       rightWingEl.style.left = `${mirrorX(rightShoulder.x - 40)}px`;
-      rightWingEl.style.top = `${rightShoulder.y + verticalOffset + 50}px`;
-      const visible = rightWrist && rightWrist.score > 0.3;
-      const angle = visible ? getAngle(rightShoulder, rightWrist) : 0;
-      rightWingEl.style.transform = `translate(-80%, -20%) rotate(${angle}deg)`;
-    }
+      rightWingEl.style.top = `${rightShoulder.y + verticalOffset + 50 + getWingOffset('right')}px`;
 
-    if (bodyImg) {
-      const bodyX = parseFloat(bodyImg.style.left);
-      const bodyY = parseFloat(bodyImg.style.top);
-  
+      if (rightWrist?.score > 0.5) {
+        const angle = clamp(getAngle(rightShoulder, rightWrist), -90, 90);
+        const smoothed = smoothAngle('right', angle);
+        rightWingEl.style.transform = `translate(-80%, -20%) rotate(${smoothed}deg)`;
+      }
     }
 
     if (bodyImg && leftShoulder && rightShoulder) {
@@ -89,13 +140,8 @@ export default function BirdAvatar() {
   return (
     <div style={{ position: 'relative', width: 640, height: 480 }}>
       <video ref={videoRef} width="640" height="480" style={{ display: 'none' }} />
-      <canvas
-        ref={canvasRef}
-        width={640}
-        height={480}
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}
-      />
-    
+      <canvas ref={canvasRef} width={640} height={480} style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }} />
+
       <img
         id="birdBody"
         src={body}
@@ -117,7 +163,7 @@ export default function BirdAvatar() {
           width: 100,
           transformOrigin: 'top right',
           zIndex: 1,
-          transition: 'top 0.1s ease-out, left 0.1s ease-out, transform 0.1s ease-out',
+          transition: 'top 0.2s ease-out, left 0.2s ease-out, transform 0.2s ease-out',
         }}
       />
       <img
@@ -129,7 +175,7 @@ export default function BirdAvatar() {
           width: 100,
           transformOrigin: 'top left',
           zIndex: 1,
-          transition: 'top 0.1s ease-out, left 0.1s ease-out, transform 0.1s ease-out',
+          transition: 'top 0.2s ease-out, left 0.2s ease-out, transform 0.2s ease-out',
         }}
       />
       {poseData && <PoseDebug pose={poseData} />}
