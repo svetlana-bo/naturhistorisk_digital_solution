@@ -26,7 +26,8 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+],
+{basename: '/naturhistorisk_digital_solution'});
 
 
 function App() {
