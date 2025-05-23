@@ -17,7 +17,9 @@ function Interaction() {
       <div>
         <Title />
         <h3 className={styles.bird_title}>Lesser bird of paradise</h3>
-        <BirdAvatar onWin={() => setWon(true)} />
+        <BirdAvatar 
+          onWin={() => setWon(true)} 
+          onResetTrigger={() => setResetTrigger((n) => n + 1)}/>
         <BirdFemale isAttracted={won} resetTrigger={resetTrigger} />
 
         </div>      

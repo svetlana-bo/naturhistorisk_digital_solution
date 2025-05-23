@@ -1,42 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import femaleBird from '../assets/bird/female_bird.png';
 
-export default function BirdFemale({ isAttracted }) {
+export default function BirdFemale({ isAttracted, resetTrigger }) {
   const [style, setStyle] = useState({
     top: '50%',
     left: '60vw',
     width: '15%',
-    transform: 'scaleX(-1)', // always facing the avatar
+    transform: 'scaleX(-1)', // always facing the player
   });
 
+  const intervalRef = useRef(null);
+
+  // Fly to player on win
   useEffect(() => {
     if (isAttracted) {
-      // On "win": fly in close to the avatar bird
+      clearInterval(intervalRef.current);
       setStyle({
         top: '60%',
         left: '30vw',
-        width: '12%',
-        transform: 'scaleX(-1)',
-      });
-      return;
-    }
-
-    // Idle wandering movement
-    const interval = setInterval(() => {
-        const top = Math.floor(Math.random() * 20) + 40;   // 40%–60% vertically
-        const left = Math.floor(Math.random() * 15) + 55;  // 55vw–70vw horizontally
-        
-      setStyle((prev) => ({
-        ...prev,
-        top: `${top}%`,
-        left: `${left}vw`,
         width: '15%',
         transform: 'scaleX(-1)',
-      }));
-    }, 3000); // move every 3 seconds
-
-    return () => clearInterval(interval);
+      });
+    }
   }, [isAttracted]);
+
+  // Reset + idle wander when resetTrigger changes  --
+  //!! reset currently needs fixing, as it's interrupted by the rendering
+  useEffect(() => {
+    if (!isAttracted) {
+      console.log('🔄 Reset triggered! Female bird going idle.');
+
+      // Set to default position
+      setStyle({
+        top: '50%',
+        left: '60vw',
+        width: '15%',
+        transform: 'scaleX(-1)',
+      });
+
+      clearInterval(intervalRef.current);
+
+      // Start wandering every 3 sec
+      intervalRef.current = setInterval(() => {
+        const top = Math.floor(Math.random() * 20) + 40;   // 40–60%
+        const left = Math.floor(Math.random() * 15) + 55;  // 55vw–70vw
+
+        setStyle(prev => ({
+          ...prev,
+          top: `${top}%`,
+          left: `${left}vw`,
+        }));
+      }, 3000);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [resetTrigger]);
 
   return (
     <img
