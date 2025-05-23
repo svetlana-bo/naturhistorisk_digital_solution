@@ -1,7 +1,7 @@
 .title1 {
     color: var(--nh-green);
     font-family: Coquette;
-    font-size: 3.27rem;
+    font-size: 2.5rem;
     font-style: normal;
     font-weight: 800;
     line-height: normal;
@@ -14,7 +14,7 @@
 .title2 {
     color:  var(--nh-pink);
     font-family: CarlMarx;
-    font-size: 2.42rem;
+    font-size: 2.2rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
