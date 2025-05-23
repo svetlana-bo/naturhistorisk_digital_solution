@@ -33,8 +33,7 @@ h2 {
 }
 
 body {color: var(--nh-green-body);
-    font-family: Poppins;
-    font: san-serif;
+    font-family: 'AU Passata', Arial, san-serif;
     font-size: 1em;
     font-style: normal;
     line-height: 150%; /* 36px */
@@ -90,7 +89,7 @@ body {color: var(--nh-green-body);
     max-width: 75ch;
 }
 
-h3 {
+h {
     text-align: left;
     font-family: CarlMarx;
     font-size: 1.5em;

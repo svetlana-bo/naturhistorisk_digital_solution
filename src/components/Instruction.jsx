@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import styles from '../modules/Instruction.module.css';
 
 export default function Instruction({ icon1, icon2, interval = 1000 }) {
   const [showFirst, setShowFirst] = useState(true);
@@ -11,21 +12,11 @@ export default function Instruction({ icon1, icon2, interval = 1000 }) {
   const currentIcon = showFirst ? icon1 : icon2;
 
   return (
-    <div style={{
-        width: '9.92rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        left: '35%',
-        }}>
+    <div className={styles.instuction_box}>
       <img
         src={currentIcon}
         alt="instruction icon"
-        style={{width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            transition: 'opacity 0.3s ease'}}
+        className={styles.instruction_icon}
       />
     </div>
   );

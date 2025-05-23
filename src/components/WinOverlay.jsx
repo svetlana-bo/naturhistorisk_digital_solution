@@ -1,40 +1,32 @@
 // Showing the overlay when the player "wins"
-// components/WinOverlay.js
+
 import React from 'react';
+import styles from '../modules/WinOverlay.module.css';
+import iconHeart from '../assets/icons/heart.svg';
+import winVideo from '../assets/videos/Bird6.mp4'; 
+import flower from '../assets/images/flower.svg';
 
 export default function WinOverlay({ onReset }) {
   return (
-    <div style={{
-      position: 'absolute',
-      top: '40%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      background: 'gold',
-      padding: '20px 40px',
-      borderRadius: '12px',
-      fontSize: '28px',
-      fontWeight: 'bold',
-      zIndex: 999,
-      color: '#000',
-      boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
-      textAlign: 'center'
-    }}>
-      🎉 You win! 🎉
-      <br />
-      <button onClick={onReset} style={{
-        marginTop: '15px',
-        padding: '8px 16px',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        border: 'none',
-        backgroundColor: '#fff',
-        color: '#333'
-      }}>
-        Play again
-      </button>
+    <div className={styles.container}>
+      <img src={flower} alt="Image flower" className={styles.flower1} />
+      <div className={styles.header}>
+        <img src={iconHeart} alt="Icon heart" className={styles.icon_heart}/> You won!
+      </div>
+      <img src={flower} alt="Image flower" className={styles.flower2} />
+      <div className={styles.videoWrapper}>
+      <video
+       src={winVideo}
+       className={styles.video}
+       autoPlay
+       loop
+       muted
+       playsInline
+      />
+</div>
+      <p className={styles.text}>
+        Learn more on the 2nd floor in Den Globale Baghave
+      </p>
     </div>
   );
 }
-
