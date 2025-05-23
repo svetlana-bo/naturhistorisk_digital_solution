@@ -1,13 +1,23 @@
+// the player bird component
+
+import styles from '../modules/BirdAvatar.module.css';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { usePoseTracker } from '../hooks/usePoseTracker';
+
+import WinOverlay from './WinOverlay';
+
+import iconDown from '../assets/icons/Instruction1-down.svg';
+import iconUp from '../assets/icons/Instruction1-up.svg';
+import Instruction from './Instruction';
+
 import leftWing from '../assets/bird/bird-left-wing.png';
 import rightWing from '../assets/bird/bird-right-wing.png';
 import body from '../assets/bird/bird-body.png';
-import WinOverlay from './WinOverlay';
-import styles from '../modules/BirdAvatar.module.css';
 
 
-export default function BirdAvatar( { onWin }) {
+
+export default function BirdAvatar( { onWin, onResetTrigger }) {
   const { videoRef, canvasRef, poseData } = usePoseTracker();
   const wingState = useRef({ left: 'idle', right: 'idle' });
   const lastAngle = useRef({ left: 0, right: 0 });
@@ -175,10 +185,11 @@ export default function BirdAvatar( { onWin }) {
   return (
     <div style={{ 
       position: 'absolute',
-      bottom: '14rem',
-      left: '10rem',
+      bottom: '20%',
+      left: '5%',
       width: 640,
       height: 480, }}>
+      <Instruction icon1={iconDown} icon2={iconUp} interval={800} />
       <video ref={videoRef} width="640" height="480" style={{ display: 'none' }} />
       <canvas ref={canvasRef} width={640} height={480} style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }} />
 
@@ -226,9 +237,9 @@ export default function BirdAvatar( { onWin }) {
         Score: {score}
       </div>
       {won && <WinOverlay onReset={() => {
-        setScore(0);
-        setWon(false);
-        setResetTrigger((n) => n + 1); // triggers remount
+      setScore(0);
+      setWon(false);
+      onResetTrigger(); //  this calls setResetTrigger from parent
       }} />}
     </div>
   );
