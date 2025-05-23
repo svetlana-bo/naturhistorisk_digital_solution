@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styles from '../modules/DefaultPage.module.css';
-import Title from "../components/Title";
 import wave from '../assets/icons/wave.svg';
 import Interaction from './Interaction';
 
@@ -31,10 +30,15 @@ export default function DefaultPage() {
       <video ref={videoRef} width="640" height="480" style={{ display: 'none' }} />
       <canvas ref={canvasRef} width={640} height={480} style={{ display: 'none' }} />
 
-      <Title />
+        <h1>
+        Rituals of Nature: 
+        </h1>
+        <h2> 
+        Consent in Paradise
+        </h2>
       <div className={styles.content_container}>
-        <div className={styles.text_box}>
-          <h2><img src={wave} alt="Icon waving hand" className={styles.waving_icon}/>Wave to start</h2>
+        <div className={styles.text_box_wave}>
+          <h3><img src={wave} alt="Icon waving hand" className={styles.waving_icon}/>Wave to start</h3>
           <p>Even in paradise, there are rules of engagement. 
             <br /> 
             <br />
@@ -59,8 +63,8 @@ export default function DefaultPage() {
           
           </div>
         </div>
-        <div className={styles.text_box}>
-          <h2><img src={wave} alt="Icon waving hand" className={styles.waving_icon}/>Wave to start</h2>
+        <div className={styles.text_box_wave}>
+          <h3><img src={wave} alt="Icon waving hand" className={styles.waving_icon}/>Wave to start</h3>
           <p>Selv i paradis findes der regler for romantik. 
             <br /> 
             <br />
