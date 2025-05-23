@@ -1,8 +1,14 @@
 :root {
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 
+
+/* define color system for the project*/ 
+  --nh-pink: #AA005C;
+  --nh-green: #4C5E22;
+  --nh-black: #0A0A0A;
+  --nh-white: #FEFEFE;
+  --nh-green-body: #2C3714;
 }
 
 

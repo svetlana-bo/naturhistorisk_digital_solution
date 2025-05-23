@@ -5,13 +5,13 @@ p {
 hr {
     width: 100%;
     border: 1px solid #ccc;
-    margin: 1rem 0;
+    margin: 0 0 1rem 0;
 }
 
 body {color: #303030;
     font-family: Poppins;
     font: san-serif;
-    font-size: 1.2em;
+    font-size: 1em;
     font-style: normal;
     line-height: 150%; /* 36px */
     letter-spacing: -0.456px;}
@@ -41,8 +41,17 @@ body {color: #303030;
     align-items: left;
     justify-content: center;
     text-align: left;
-    padding: 2rem;
+    padding: 1rem;
     text-align: left;
+}
+
+.text_box_lang {display: flex;
+    flex-direction: row;
+    align-items: top;
+    gap: 0rem; /*  space between cards */
+    justify-content: center; 
+    text-align: left;
+    max-width: 75ch;
 }
 
 h2 {
@@ -50,6 +59,14 @@ h2 {
     font-family: CarlMarx;
     font-size: 1.5em;
     margin-bottom: 0em;
+}
+
+.icon {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    margin-top: 0.25rem;
+    margin-right: 0.5em; /* space between icon and text */
 }
 
 .waving_icon {
