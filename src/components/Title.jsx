@@ -5,10 +5,9 @@ const Title = () => {
     <>
         <h1 className={styles.title1}>
         Rituals of Nature: 
+        <span className={styles.title2}> 
+        Consent in Paradise </span>
         </h1>
-        <h2 className={styles.title2}> 
-        Consent in Paradise
-        </h2>
     </>
     );
   };
