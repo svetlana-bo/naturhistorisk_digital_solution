@@ -1,3 +1,6 @@
+//Home page component. 
+//Uses the pose tracker and waving detector hooks
+
 import { useEffect, useState } from 'react';
 import styles from '../modules/DefaultPage.module.css';
 import wave from '../assets/icons/wave.svg';
@@ -10,23 +13,28 @@ import { usePoseTracker } from '../hooks/usePoseTracker';
 import { useWavingDetector } from '../hooks/useWavingDetector';
 
 export default function DefaultPage() {
+  // Use custom hooks for pose tracking and waving detection
   const { videoRef, canvasRef, poseData } = usePoseTracker();
   const isWaving = useWavingDetector(poseData);
+  
   const [hasEntered, setHasEntered] = useState(false);
 
+  // Effect to handle waving detection and simulate navigation
   useEffect(() => {
     if (isWaving && !hasEntered) {
       setHasEntered(true); // simulate navigation or trigger effect
     }
   }, [isWaving, hasEntered]);
 
+  // If the user has waved, show the interaction view
   if (hasEntered) {
     return <Interaction />; // Replace with your actual view
   }
 
+  // Render the default page with instructions and text
   return (
     <div className={styles.main_container}>
-      {/* Invisible camera feed */}
+      {/* Invisible camera feed used for pose detection*/}
       <video ref={videoRef} width="640" height="480" style={{ display: 'none' }} />
       <canvas ref={canvasRef} width={640} height={480} style={{ display: 'none' }} />
 
@@ -37,6 +45,7 @@ export default function DefaultPage() {
         Consent in Paradise
         </h2>
       <div className={styles.content_container}>
+        {/* Call-to-action: wave to start */}
         <div className={styles.text_box_wave}>
           <h3><img src={wave} alt="Icon waving hand" className={styles.waving_icon}/>Wave to start</h3>
           <p>Even in paradise, there are rules of engagement. 
@@ -46,6 +55,7 @@ export default function DefaultPage() {
             </b>
             </p>
            </div>
+        {/* Danish and English project description */}
         <div className={styles.text_box}>
           <div className={styles.text_box_lang}>
           <img src={dkIcon} alt="Icon danish language" className={styles.icon} />
@@ -63,6 +73,7 @@ export default function DefaultPage() {
           
           </div>
         </div>
+        {/* Duplicate call-to-action (in Danish) */}
         <div className={styles.text_box_wave}>
           <h3><img src={wave} alt="Icon waving hand" className={styles.waving_icon}/>Wave to start</h3>
           <p>Selv i paradis findes der regler for romantik. 

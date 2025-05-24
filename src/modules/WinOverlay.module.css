@@ -27,6 +27,7 @@
     background-color: var(--nh-green-light);
     border-bottom: 2.5px solid var(--nh-green);
   }
+
 .flower1 {
     position: absolute;
     pointer-events: none;
@@ -58,7 +59,7 @@
   
   .video {
     position: absolute;
-    top: -10%;                   /* adjust this to crop top/bottom */
+    top: -10%;                   /* cropping the image  */
     left: -10%;
     width: 120%;                 /* zoom in slightly */
     height: 120%;

@@ -113,11 +113,7 @@ h {
 
 }
 
-
-
-
-
-
+/* Animation for the waving icon */
     @keyframes wave {
         0% { transform: rotate(0deg); }
         15% { transform: rotate(14deg); }

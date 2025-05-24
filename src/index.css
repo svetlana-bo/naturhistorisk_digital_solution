@@ -14,6 +14,7 @@
   --nh-gray: #EAEAEA;
 }
 
+/* Importing the AU Passata font */
 @font-face {
   font-family: 'AU Passata';
   src: url('public/fonts/AUPassata-Rg.tff') format('truetype');

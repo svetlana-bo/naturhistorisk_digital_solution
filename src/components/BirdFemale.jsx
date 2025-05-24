@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import femaleBird from '../assets/bird/female_bird.png';
 
 export default function BirdFemale({ isAttracted, resetTrigger }) {
+  // Inline style controls female bird's position and size
   const [style, setStyle] = useState({
     top: '50%',
     left: '60vw',
     width: '15%',
-    transform: 'scaleX(-1)', // always facing the player
+    transform: 'scaleX(-1)', // Flip horizontally to face the avatar
   });
 
   const intervalRef = useRef(null);
@@ -56,6 +57,7 @@ export default function BirdFemale({ isAttracted, resetTrigger }) {
     return () => clearInterval(intervalRef.current);
   }, [resetTrigger]);
 
+  // Render the bird
   return (
     <img
       src={femaleBird}

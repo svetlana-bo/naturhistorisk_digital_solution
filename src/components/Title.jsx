@@ -1,3 +1,5 @@
+// Title - compopnent for the title of the page
+
 import styles from '../modules/Title.module.css';
 
 const Title = () => {
