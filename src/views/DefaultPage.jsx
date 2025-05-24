@@ -10,6 +10,8 @@ import Interaction from './Interaction';
 import LoadingScreen from '../components/LoadingScreen'; 
 import dkIcon from '../assets/icons/dk.svg';
 import enIcon from '../assets/icons/en.svg';
+import bird1 from '../assets/gifs/bird1.gif'
+import bird2 from '../assets/gifs/bird2.gif';
 
 import { usePoseTracker } from '../hooks/usePoseTracker';
 import { useWavingDetector } from '../hooks/useWavingDetector';
@@ -55,8 +57,8 @@ export default function DefaultPage() {
       <div className={styles.content_container}>
         <div className={styles.text_box_wave}>
           <h3>
-            <img src={wave} alt="Icon waving hand" className={styles.waving_icon} />
             Wave to start
+            <img src={wave} alt="Icon waving hand" className={styles.waving_icon} />
           </h3>
           <p>
             Even in paradise, there are rules of engagement.
@@ -64,6 +66,7 @@ export default function DefaultPage() {
             <br />
             <b>Can you impress a mate while staying respectful of their boundaries?</b>
           </p>
+          <img src={bird1} alt="Image of bird" className={styles.intro_bird} />
         </div>
 
         <div className={styles.text_box}>
@@ -102,6 +105,7 @@ export default function DefaultPage() {
             <br />
             <b>Kan du vinde en partners hjerte uden at overskride deres grænser?</b>
           </p>
+          <img src={bird2} alt="Image of bird" className={styles.intro_bird}/>
         </div>
       </div>
     </div>

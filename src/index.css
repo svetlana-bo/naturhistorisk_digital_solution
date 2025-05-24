@@ -26,6 +26,9 @@
 body {
   font-family: 'AU Passata', Arial, sans-serif;
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
   background: url('../public/background.png') no-repeat center center fixed;
   background-size: cover;
   min-width: 320px;
