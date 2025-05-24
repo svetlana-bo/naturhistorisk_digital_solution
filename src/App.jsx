@@ -1,5 +1,5 @@
 import './App.css'
-import { RouterProvider , createBrowserRouter} from 'react-router-dom';
+import { HashRouter, RouterProvider , createBrowserRouter} from 'react-router-dom';
 import Layout from './views/Layout.jsx';
 import DefaultPage from './views/DefaultPage';
 import Interaction from './views/Interaction.jsx';
