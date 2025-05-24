@@ -1,8 +1,8 @@
 .instuction_box {
     width: 9.92rem;
     display: flex;
-    alignItems: center;
-    justifyContent: center;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     left: 35%;
     }
