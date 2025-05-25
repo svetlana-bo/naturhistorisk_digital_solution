@@ -15,28 +15,40 @@ import rightWing from '../assets/bird/bird-right-wing.png';
 import body from '../assets/bird/bird-body.png';
 
 export default function BirdAvatar({ onWin, onResetDone }) {
+
+  // Custom hook to track pose data and manage video/canvas references
   const { videoRef, canvasRef, poseData } = usePoseTracker();
+
+  // Wing animation states (ref to avoid triggering rerenders)
   const wingState = useRef({ left: 'idle', right: 'idle' });
   const lastAngle = useRef({ left: 0, right: 0 });
   const lastRaised = useRef(false);
 
+  // State to manage score and win condition
   const [score, setScore] = useState(0);
   const [won, setWon] = useState(false);
 
+  //Utility functions for angle calculations and clamping
   const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
+
+  // Smooth angle calculation to avoid jittery movements
   const smoothAngle = (side, newAngle) => {
     const smoothed = 0.8 * lastAngle.current[side] + 0.2 * newAngle;
     lastAngle.current[side] = smoothed;
     return smoothed;
   };
+
+  // Calculate angle between two body keypoints
   const getAngle = (a, b) => {
     if (!a || !b || isNaN(a.x) || isNaN(a.y) || isNaN(b.x) || isNaN(b.y)) return 0;
     return Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
   };
 
+  //Main animation and win logic
   useEffect(() => {
     if (!poseData || !canvasRef.current) return;
 
+    // Get keypoints for shoulders and wrists
     const key = (name) => poseData.keypoints.find((k) => k.name === name);
     const leftShoulder = key('left_shoulder');
     const rightShoulder = key('right_shoulder');
@@ -50,10 +62,12 @@ export default function BirdAvatar({ onWin, onResetDone }) {
     const centerY = canvasHeight / 2;
     const verticalOffset = centerY - bodyPoseY;
 
+    // Get references to the wing and body elements
     const leftWingEl = document.getElementById('leftWing');
     const rightWingEl = document.getElementById('rightWing');
     const bodyImg = document.getElementById('birdBody');
 
+    // Update wing states based on wrist and shoulder positions (idle / raising / raised / lowering)
     const updateWingState = (side, wrist, shoulder) => {
       const state = wingState.current[side];
       if (!wrist || !shoulder || wrist.score < 0.3) {
@@ -69,9 +83,11 @@ export default function BirdAvatar({ onWin, onResetDone }) {
       }
     };
 
+    // Update the wing states based on current pose data
     updateWingState('left', leftWrist, leftShoulder);
     updateWingState('right', rightWrist, rightShoulder);
 
+    // Check if both wings are raised and update score
     const bothRaised = wingState.current.left === 'raised' && wingState.current.right === 'raised';
     if (bothRaised && !lastRaised.current && !won) {
       setScore((prev) => {
@@ -85,6 +101,7 @@ export default function BirdAvatar({ onWin, onResetDone }) {
     }
     lastRaised.current = bothRaised;
 
+    // Vertical offset adjustments for wing animation
     const getWingOffset = (side) => {
       switch (wingState.current[side]) {
         case 'raising':
@@ -94,6 +111,7 @@ export default function BirdAvatar({ onWin, onResetDone }) {
       }
     };
 
+    // Update left wing position and rotation
     if (leftWingEl && leftShoulder) {
       const leftWingX = mirrorX(leftShoulder.x - 10);
       leftWingEl.style.left = `${leftWingX}px`;
@@ -108,6 +126,7 @@ export default function BirdAvatar({ onWin, onResetDone }) {
       }
     }
 
+    // Update right wing position and rotation
     if (rightWingEl && rightShoulder) {
       const rightWingX = mirrorX(rightShoulder.x - 60);
       rightWingEl.style.left = `${rightWingX}px`;
@@ -121,6 +140,7 @@ export default function BirdAvatar({ onWin, onResetDone }) {
       }
     }
 
+  // Position the bird body centered between the shoulders of the user
     if (bodyImg && leftShoulder && rightShoulder) {
       const leftWingX = mirrorX(leftShoulder.x + 40);
       const rightWingX = mirrorX(rightShoulder.x - 110);

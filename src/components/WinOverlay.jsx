@@ -23,7 +23,7 @@ export default function WinOverlay({ onReset, videoScr }) {
           autoPlay
           muted
           playsInline
-          onEnded={onReset} // ✅ triggers reset when video finishes
+          onEnded={onReset} //  triggers reset when video finishes
         />
       </div>
 
