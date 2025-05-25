@@ -105,7 +105,7 @@ export default function BirdAvatar({ onWin, onResetDone }) {
     const getWingOffset = (side) => {
       switch (wingState.current[side]) {
         case 'raising':
-        case 'raised': return -40;
+        case 'raised': return 0;
         case 'lowering': return -10;
         default: return 0;
       }
@@ -113,9 +113,9 @@ export default function BirdAvatar({ onWin, onResetDone }) {
 
     // Update left wing position and rotation
     if (leftWingEl && leftShoulder) {
-      const leftWingX = mirrorX(leftShoulder.x - 10);
+      const leftWingX = mirrorX(leftShoulder.x - 50);
       leftWingEl.style.left = `${leftWingX}px`;
-      leftWingEl.style.top = `${leftShoulder.y + verticalOffset + 100 + getWingOffset('left')}px`;
+      leftWingEl.style.top = `${leftShoulder.y + verticalOffset + 120 + getWingOffset('left')}px`;
       if (leftWrist?.score > 0.5) {
         const rawAngle = getAngle(leftShoulder, leftWrist);
         const angle = clamp(rawAngle, -90, 90);
@@ -128,9 +128,9 @@ export default function BirdAvatar({ onWin, onResetDone }) {
 
     // Update right wing position and rotation
     if (rightWingEl && rightShoulder) {
-      const rightWingX = mirrorX(rightShoulder.x - 60);
+      const rightWingX = mirrorX(rightShoulder.x - 30);
       rightWingEl.style.left = `${rightWingX}px`;
-      rightWingEl.style.top = `${rightShoulder.y + verticalOffset + 100 + getWingOffset('right')}px`;
+      rightWingEl.style.top = `${rightShoulder.y + verticalOffset + 120 + getWingOffset('right')}px`;
       if (rightWrist?.score > 0.5) {
         const angle = clamp(getAngle(rightShoulder, rightWrist), -90, 90);
         const smoothed = smoothAngle('right', angle);
@@ -142,7 +142,7 @@ export default function BirdAvatar({ onWin, onResetDone }) {
 
   // Position the bird body centered between the shoulders of the user
     if (bodyImg && leftShoulder && rightShoulder) {
-      const leftWingX = mirrorX(leftShoulder.x + 40);
+      const leftWingX = mirrorX(leftShoulder.x + 50);
       const rightWingX = mirrorX(rightShoulder.x - 110);
       const centerX = (leftWingX + rightWingX) / 2;
       const topY = centerY;
@@ -191,7 +191,7 @@ export default function BirdAvatar({ onWin, onResetDone }) {
           onReset={() => {
             setScore(0);
             setWon(false);
-            onResetDone?.();// ✅ defers the parent trigger
+            onResetDone?.();// defers the parent trigger
           }}
         />
       )}
