@@ -17,16 +17,19 @@ import { usePoseTracker } from '../hooks/usePoseTracker';
 import { useWavingDetector } from '../hooks/useWavingDetector';
 
 export default function DefaultPage() {
+  // Set up pose tracking and waving detection
   const { videoRef, canvasRef, poseData } = usePoseTracker();
   const isWaving = useWavingDetector(poseData);
 
   const [hasEntered, setHasEntered] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  //When user waves, start preloading assets and show loading screen
   useEffect(() => {
     if (isWaving && !hasEntered && !loading) {
       setLoading(true);
 
+    // Start preloading assets and set a minimum delay
     const assetPreload = preloadAssets(allInteractionAssets);
     const delay = new Promise((resolve) => setTimeout(resolve, 1500)); // minimum 1.5 sec delay
 
@@ -38,16 +41,21 @@ export default function DefaultPage() {
       .catch((error) => {
         console.error('Error preloading assets:', error);
         setLoading(false);
-        setHasEntered(true);
+        setHasEntered(true); // still allow entry even if preload fails
       });
   }
   }, [isWaving, hasEntered, loading]);
 
+  //Show loading screen while assets are being preloaded
   if (loading) return <LoadingScreen />;
+
+  // Launch interactive bird experience after loading
   if (hasEntered) return <Interaction />;
 
+  // Render the default page with instructions and intro content
   return (
     <div className={styles.main_container}>
+      {/* Hidden video and canvas for pose tracking */}
       <video ref={videoRef} width="640" height="480" style={{ display: 'none' }} />
       <canvas ref={canvasRef} width={640} height={480} style={{ display: 'none' }} />
 
@@ -55,6 +63,7 @@ export default function DefaultPage() {
       <h2>Consent in Paradise</h2>
 
       <div className={styles.content_container}>
+         {/* Instruction box: wave to begin */}
         <div className={styles.text_box_wave}>
           <h3>
             Wave to start
@@ -69,6 +78,7 @@ export default function DefaultPage() {
           <img src={bird1} alt="Image of bird" className={styles.intro_bird} />
         </div>
 
+        {/* Intro text box in EN & DK  */}
         <div className={styles.text_box}>
           <div className={styles.text_box_lang}>
             <img src={dkIcon} alt="Icon danish language" className={styles.icon} />
@@ -94,6 +104,7 @@ export default function DefaultPage() {
           </div>
         </div>
 
+        {/* Instruction box: wave to begin in Danish */}
         <div className={styles.text_box_wave}>
           <h3>
             <img src={wave} alt="Icon waving hand" className={styles.waving_icon} />

@@ -1,3 +1,4 @@
+// LoadingScreen - component to transition between elements in the app.
 import React from 'react';
 import loadingBird from '../assets/gifs/loading_bird.gif';
 import styles from '../modules/LoadingScreen.module.css';

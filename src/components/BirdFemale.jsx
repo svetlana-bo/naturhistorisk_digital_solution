@@ -65,6 +65,8 @@ export default function BirdFemale({ isAttracted, resetTrigger }) {
       style={{
         position: 'absolute',
         ...style,
+        height: '24vh', 
+        width: 'auto',  // Maintain aspect ratio
         transition: 'top 2s ease-in-out, left 2s ease-in-out, width 2s ease-in-out',
         zIndex: 2,
         pointerEvents: 'none',
