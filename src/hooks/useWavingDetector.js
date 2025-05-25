@@ -1,4 +1,5 @@
 //useWavingDetector - A custom hook to detect waving gestures based on pose data.
+// we get the pose data from the Parent.
 
 import { useEffect, useState, useRef } from 'react';
 
